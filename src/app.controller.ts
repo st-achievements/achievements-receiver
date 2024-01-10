@@ -1,6 +1,6 @@
-import { Controller, HttpStatus, Logger, Post } from '@nestjs/common';
+import { Controller, HttpStatus, Post } from '@nestjs/common';
 import { ZBody, ZRes } from '@st-api/core';
-import { PubSub } from '@st-api/firebase';
+import { Logger, PubSub } from '@st-api/firebase';
 import { z } from 'zod';
 
 import { AchievementInputDto } from './achievement-input.dto.js';
@@ -13,7 +13,7 @@ import { ACHIEVEMENTS_PROCESSOR_QUEUE } from './app.constants.js';
 export class AppController {
   constructor(private readonly pubSub: PubSub) {}
 
-  private readonly logger = new Logger(AppController.name);
+  private readonly logger = Logger.create(this);
 
   @ZRes(z.void(), HttpStatus.ACCEPTED)
   @Post()
@@ -21,7 +21,7 @@ export class AppController {
     @ZBody() { username, ...body }: AchievementInputDto,
   ): Promise<void> {
     this.logger.log(`username: ${username}`);
-    this.logger.log(`body:`, body);
+    this.logger.log('body', body);
     const length = Math.max(
       ...Object.values(body).map((value) => value.length),
     );
@@ -47,7 +47,7 @@ export class AppController {
         totalDistanceUnit,
         totalDistance,
       };
-      this.logger.log(`processorDto:`, processorDto);
+      this.logger.log('processorDto', processorDto);
       await this.pubSub.publish(ACHIEVEMENTS_PROCESSOR_QUEUE, {
         json: processorDto,
       });
