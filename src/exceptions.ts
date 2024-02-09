@@ -6,6 +6,7 @@ export const API_KEY_NOT_FOUND = exception({
   status: HttpStatus.INTERNAL_SERVER_ERROR,
   errorCode: 'AUTH-0001',
 });
+
 export const INVALID_API_KEY = exception({
   error: 'Invalid API KEY',
   status: HttpStatus.UNAUTHORIZED,

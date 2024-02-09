@@ -5,7 +5,7 @@ const PropertySchema = z
   .string()
   .transform((text) => text.split('\n').filter(Boolean));
 
-export class AchievementInputDto extends zDto(
+export class WorkoutInputDto extends zDto(
   z.object({
     id: PropertySchema,
     startTime: PropertySchema,

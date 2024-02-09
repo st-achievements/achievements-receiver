@@ -3,9 +3,9 @@ import { ZBody, ZRes } from '@st-api/core';
 import { Logger, PubSub } from '@st-api/firebase';
 import { z } from 'zod';
 
-import { AchievementInputDto } from './achievement-input.dto.js';
-import { AchievementProcessorDto } from './achievement-processor.dto.js';
-import { ACHIEVEMENTS_PROCESSOR_QUEUE } from './app.constants.js';
+import { WORKOUT_PROCESSOR_QUEUE } from './app.constants.js';
+import { WorkoutInputDto } from './workout-input.dto.js';
+import { WorkoutProcessorDto } from './workout-processor.dto.js';
 
 @Controller({
   version: '1',
@@ -17,9 +17,7 @@ export class AppController {
 
   @ZRes(z.void(), HttpStatus.ACCEPTED)
   @Post()
-  async post(
-    @ZBody() { username, ...body }: AchievementInputDto,
-  ): Promise<void> {
+  async post(@ZBody() { username, ...body }: WorkoutInputDto): Promise<void> {
     this.logger.log(`username: ${username}`);
     this.logger.log('body', body);
     const length = Math.max(
@@ -34,7 +32,7 @@ export class AppController {
       const [totalDistance, totalDistanceUnit] = totalDistanceValue?.split(
         ' ',
       ) ?? [undefined, undefined];
-      const processorDto: AchievementProcessorDto = {
+      const processorDto: WorkoutProcessorDto = {
         id: body.id[index]!,
         username,
         endTime: new Date(body.endTime[index]!).toISOString(),
@@ -48,7 +46,7 @@ export class AppController {
         totalDistance,
       };
       this.logger.log('processorDto', processorDto);
-      await this.pubSub.publish(ACHIEVEMENTS_PROCESSOR_QUEUE, {
+      await this.pubSub.publish(WORKOUT_PROCESSOR_QUEUE, {
         json: processorDto,
       });
     }

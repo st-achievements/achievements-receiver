@@ -1,1 +1,1 @@
-export const ACHIEVEMENTS_PROCESSOR_QUEUE = 'achievements-processor';
+export const WORKOUT_PROCESSOR_QUEUE = 'usr_workout-processor_queue';

@@ -7,6 +7,6 @@ const app = StFirebaseApp.create(AppModule, {
   secrets: [API_KEY_SECRET],
 });
 
-export const achievements = {
+export const usr_workout = {
   receiver: app.getHttpHandler(),
 };

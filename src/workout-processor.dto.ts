@@ -1,4 +1,4 @@
-export interface AchievementProcessorDto {
+export interface WorkoutProcessorDto {
   id: string;
   startTime: string;
   endTime: string;
