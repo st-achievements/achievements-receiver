@@ -11,7 +11,6 @@
         "firestore-debug.log",
         "ui-debug.log",
         "pubsub-debug.log",
-        ".env",
         ".secret.local"
       ],
       "predeploy": [
@@ -26,6 +25,9 @@
     "ui": {
       "enabled": true
     },
-    "singleProjectMode": true
+    "singleProjectMode": true,
+    "firestore": {
+      "port": 8080
+    }
   }
 }

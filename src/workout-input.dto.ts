@@ -14,6 +14,6 @@ export class WorkoutInputDto extends zDto(
     totalDistance: PropertySchema,
     workoutActivityType: PropertySchema,
     totalEnergyBurned: PropertySchema,
-    username: z.string().trim().min(0).max(255),
+    username: z.string().trim().min(1).max(255),
   }),
 ) {}
