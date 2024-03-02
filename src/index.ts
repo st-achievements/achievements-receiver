@@ -23,8 +23,10 @@ const app = StFirebaseApp.create(AppModule, {
     },
   },
   extraGlobalExceptions: Object.values(Exceptions),
-});
+}).withHttpHandler();
 
 export const usr_workout = {
-  receiver: app.getHttpHandler(),
+  receiver: {
+    http: app.getHttpHandler(),
+  },
 };
