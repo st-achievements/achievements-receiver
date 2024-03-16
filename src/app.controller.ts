@@ -38,12 +38,12 @@ export class AppController {
         endTime: new Date(body.endTime[index]!).toISOString(),
         startTime: new Date(body.startTime[index]!).toISOString(),
         workoutActivityType: body.workoutActivityType[index]!,
-        duration: duration!,
+        duration: duration!.replaceAll(',', '.'),
         durationUnit: durationUnit!,
         totalEnergyBurnedUnit: totalEnergyBurnedUnit!,
-        totalEnergyBurned: totalEnergyBurned!,
+        totalEnergyBurned: totalEnergyBurned!.replaceAll(',', '.'),
         totalDistanceUnit,
-        totalDistance,
+        totalDistance: totalDistance?.replace(',', '.'),
       };
       this.logger.log(`processorDto - row ${index}`, { processorDto });
       await this.pubSub.publish(WORKOUT_PROCESSOR_QUEUE, {
