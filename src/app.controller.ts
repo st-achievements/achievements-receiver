@@ -19,7 +19,7 @@ export class AppController {
   @Post()
   async post(@ZBody() { username, ...body }: WorkoutInputDto): Promise<void> {
     this.logger.log(`username: ${username}`);
-    this.logger.log('body', body);
+    this.logger.log('body', { body });
     const length = Math.max(
       ...Object.values(body).map((value) => value.length),
     );
@@ -45,7 +45,7 @@ export class AppController {
         totalDistanceUnit,
         totalDistance,
       };
-      this.logger.log('processorDto', processorDto);
+      this.logger.log(`processorDto - row ${index}`, { processorDto });
       await this.pubSub.publish(WORKOUT_PROCESSOR_QUEUE, {
         json: processorDto,
       });
