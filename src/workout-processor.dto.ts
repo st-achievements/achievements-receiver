@@ -1,4 +1,9 @@
 export interface WorkoutProcessorDto {
+  username: string;
+  workouts: WorkoutDto[];
+}
+
+export interface WorkoutDto {
   id: string;
   startTime: string;
   endTime: string;
@@ -9,5 +14,4 @@ export interface WorkoutProcessorDto {
   workoutActivityType: string;
   totalEnergyBurned: string;
   totalEnergyBurnedUnit: string;
-  username: string;
 }

@@ -24,6 +24,10 @@ export class AppController {
       ...Object.values(body).map((value) => value.length),
     );
     this.logger.log(`length: ${length}`);
+    const processorDto: WorkoutProcessorDto = {
+      username,
+      workouts: [],
+    };
     for (let index = 0; index < length; index++) {
       const [duration, durationUnit] = body.duration[index]!.split(' ');
       const [totalEnergyBurned, totalEnergyBurnedUnit] =
@@ -32,9 +36,8 @@ export class AppController {
       const [totalDistance, totalDistanceUnit] = totalDistanceValue?.split(
         ' ',
       ) ?? [undefined, undefined];
-      const processorDto: WorkoutProcessorDto = {
+      processorDto.workouts.push({
         id: body.id[index]!,
-        username,
         endTime: new Date(body.endTime[index]!).toISOString(),
         startTime: new Date(body.startTime[index]!).toISOString(),
         workoutActivityType: body.workoutActivityType[index]!,
@@ -44,11 +47,11 @@ export class AppController {
         totalEnergyBurned: totalEnergyBurned!.replaceAll(',', '.'),
         totalDistanceUnit,
         totalDistance: totalDistance?.replace(',', '.'),
-      };
-      this.logger.log(`processorDto - row ${index}`, { processorDto });
-      await this.pubSub.publish(WORKOUT_PROCESSOR_QUEUE, {
-        json: processorDto,
       });
     }
+    this.logger.info({ processorDto });
+    await this.pubSub.publish(WORKOUT_PROCESSOR_QUEUE, {
+      json: processorDto,
+    });
   }
 }
