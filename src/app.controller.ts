@@ -1,11 +1,20 @@
 import { Controller, HttpStatus, Post } from '@nestjs/common';
-import { ZBody, ZRes } from '@st-api/core';
+import { Exceptions, formatZodErrorString, ZBody, ZRes } from '@st-api/core';
 import { Logger, PubSub } from '@st-api/firebase';
 import { z } from 'zod';
 
-import { WORKOUT_PROCESSOR_QUEUE } from './app.constants.js';
+import {
+  MAX_WORKOUTS_PER_REQUEST,
+  WORKOUT_PROCESSOR_QUEUE,
+} from './app.constants.js';
+import {
+  API_KEY_NOT_FOUND,
+  INVALID_API_KEY,
+  INVALID_WORKOUT,
+  NUMBER_OF_WORKOUTS_EXCEEDED_LIMIT,
+} from './exceptions.js';
 import { WorkoutInputDto } from './workout-input.dto.js';
-import { WorkoutProcessorDto } from './workout-processor.dto.js';
+import { WorkoutDto, WorkoutProcessorDto } from './workout-processor.dto.js';
 
 @Controller({
   version: '1',
@@ -15,6 +24,12 @@ export class AppController {
 
   private readonly logger = Logger.create(this);
 
+  @Exceptions([
+    INVALID_WORKOUT,
+    API_KEY_NOT_FOUND,
+    INVALID_API_KEY,
+    NUMBER_OF_WORKOUTS_EXCEEDED_LIMIT,
+  ])
   @ZRes(z.void(), HttpStatus.ACCEPTED)
   @Post()
   async post(@ZBody() { username, ...body }: WorkoutInputDto): Promise<void> {
@@ -24,30 +39,41 @@ export class AppController {
       ...Object.values(body).map((value) => value.length),
     );
     this.logger.log(`length: ${length}`);
+
+    if (length > MAX_WORKOUTS_PER_REQUEST) {
+      throw NUMBER_OF_WORKOUTS_EXCEEDED_LIMIT();
+    }
+
     const processorDto: WorkoutProcessorDto = {
       username,
       workouts: [],
     };
     for (let index = 0; index < length; index++) {
-      const [duration, durationUnit] = body.duration[index]!.split(' ');
+      const [duration, durationUnit] = body.duration[index]?.split(' ') ?? [];
       const [totalEnergyBurned, totalEnergyBurnedUnit] =
-        body.totalEnergyBurned[index]!.split(' ');
+        body.totalEnergyBurned[index]?.split(' ') ?? [];
       const totalDistanceValue = body.totalDistance[index];
-      const [totalDistance, totalDistanceUnit] = totalDistanceValue?.split(
-        ' ',
-      ) ?? [undefined, undefined];
-      processorDto.workouts.push({
-        id: body.id[index]!,
-        endTime: new Date(body.endTime[index]!).toISOString(),
-        startTime: new Date(body.startTime[index]!).toISOString(),
-        workoutActivityType: body.workoutActivityType[index]!,
-        duration: duration!.replaceAll(',', '.'),
-        durationUnit: durationUnit!,
-        totalEnergyBurnedUnit: totalEnergyBurnedUnit!,
-        totalEnergyBurned: totalEnergyBurned!.replaceAll(',', '.'),
+      const [totalDistance, totalDistanceUnit] =
+        totalDistanceValue?.split(' ') ?? [];
+      const workoutUnparsed = {
+        id: body.id[index],
+        endTime: body.endTime[index],
+        startTime: body.startTime[index],
+        workoutActivityType: body.workoutActivityType[index],
+        duration,
+        durationUnit,
+        totalEnergyBurnedUnit,
+        totalEnergyBurned,
         totalDistanceUnit,
-        totalDistance: totalDistance?.replace(',', '.'),
-      });
+        totalDistance,
+      };
+      const validationResult = WorkoutDto.safeParse(workoutUnparsed);
+      if (!validationResult.success) {
+        throw INVALID_WORKOUT(
+          `Error: ${formatZodErrorString(validationResult.error)} | Workout number: ${index}`,
+        );
+      }
+      processorDto.workouts.push(validationResult.data);
     }
     this.logger.info({ processorDto });
     await this.pubSub.publish(WORKOUT_PROCESSOR_QUEUE, {

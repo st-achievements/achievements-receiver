@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 const PropertySchema = z
   .string()
+  .max(10_000)
   .transform((text) => text.split('\n').filter(Boolean));
 
 export class WorkoutInputDto extends zDto(
