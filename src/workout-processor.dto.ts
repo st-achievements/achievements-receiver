@@ -15,7 +15,7 @@ export const WorkoutDto = z.object({
   startTime: DateSchema,
   endTime: DateSchema,
   duration: DoubleSchema,
-  durationUnit: z.string(),
+  durationUnit: z.string().optional(),
   totalDistance: DoubleSchema.optional(),
   totalDistanceUnit: z.string().optional(),
   workoutActivityType: z.string().trim().min(1),
