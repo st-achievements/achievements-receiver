@@ -1,9 +1,10 @@
+import dayjs from 'dayjs';
 import { z } from 'zod';
 
 const DateSchema = z
   .string()
   .datetime()
-  .transform((date) => new Date(date).toISOString());
+  .transform((date) => dayjs(date).toISOString());
 const DoubleSchema = z
   .string()
   .regex(/^\d{1,6}([,.]\d{1,2})?$/)

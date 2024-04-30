@@ -4,6 +4,11 @@ import { StFirebaseApp } from '@st-api/firebase';
 import { AppModule } from './app.module.js';
 import { API_KEY_SECRET } from './secrets.js';
 
+import customParseFormat from 'dayjs/plugin/customParseFormat.js';
+import dayjs from 'dayjs';
+
+dayjs.extend(customParseFormat);
+
 const app = StFirebaseApp.create(AppModule, {
   secrets: [API_KEY_SECRET, REDIS_CREDENTIALS],
   swagger: {
