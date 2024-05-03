@@ -1,4 +1,5 @@
 import { Controller, HttpStatus, Post } from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
 import { Exceptions, formatZodErrorString, ZBody, ZRes } from '@st-api/core';
 import { Logger, PubSub } from '@st-api/firebase';
 import { z } from 'zod';
@@ -24,6 +25,9 @@ export class AppController {
 
   private readonly logger = Logger.create(this);
 
+  @ApiOperation({
+    summary: 'Handle workouts coming from iOS Shortcuts app',
+  })
   @Exceptions([
     INVALID_WORKOUT,
     API_KEY_NOT_FOUND,
@@ -31,8 +35,10 @@ export class AppController {
     NUMBER_OF_WORKOUTS_EXCEEDED_LIMIT,
   ])
   @ZRes(z.void(), HttpStatus.ACCEPTED)
-  @Post()
-  async post(@ZBody() { username, ...body }: WorkoutInputDto): Promise<void> {
+  @Post('ios-shortcut')
+  async postIOSShortcut(
+    @ZBody() { username, ...body }: WorkoutInputDto,
+  ): Promise<void> {
     this.logger.log(`username: ${username}`);
     this.logger.log('body', { body });
     const length = Math.max(

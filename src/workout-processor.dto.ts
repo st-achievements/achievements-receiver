@@ -3,8 +3,17 @@ import { z } from 'zod';
 
 const DateSchema = z
   .string()
-  .datetime()
-  .transform((date) => dayjs(date).toISOString());
+  .transform((date) =>
+    dayjs(
+      date,
+      ['YYYY-MM-DD[T]HH:mm:ssZ', 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'],
+      true,
+    ),
+  )
+  .refine((date) => date.isValid(), {
+    message: 'Invalid Date',
+  })
+  .transform((date) => date.toISOString());
 const DoubleSchema = z
   .string()
   .regex(/^\d{1,6}([,.]\d{1,2})?$/)
@@ -26,7 +35,11 @@ export const WorkoutDto = z.object({
 
 export type WorkoutDto = z.infer<typeof WorkoutDto>;
 
-export interface WorkoutProcessorDto {
-  username: string;
-  workouts: WorkoutDto[];
-}
+export const WorkoutProcessorDto = z.object({
+  username: z.string().trim().min(1).max(255).openapi({
+    example: 'stLmpp',
+  }),
+  workouts: WorkoutDto.array(),
+});
+
+export type WorkoutProcessorDto = z.infer<typeof WorkoutProcessorDto>;
