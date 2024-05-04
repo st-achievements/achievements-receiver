@@ -30,7 +30,7 @@
     "@nestjs/throttler": "^5.1.2",
     "@st-achievements/core": "^1.0.0",
     "@st-api/core": "~4.6.2",
-    "@st-api/firebase": "~4.1.0",
+    "@st-api/firebase": "~4.1.1",
     "dayjs": "^1.11.11",
     "express": "~4.19.2",
     "firebase": "^10.11.1",

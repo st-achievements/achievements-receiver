@@ -35,8 +35,8 @@ export class AppController {
     NUMBER_OF_WORKOUTS_EXCEEDED_LIMIT,
   ])
   @ZRes(z.void(), HttpStatus.ACCEPTED)
-  @Post('ios-shortcut')
-  async postIOSShortcut(
+  @Post('ios-shortcuts')
+  async postIOSShortcuts(
     @ZBody() { username, ...body }: WorkoutInputDto,
   ): Promise<void> {
     this.logger.log(`username: ${username}`);
@@ -84,6 +84,18 @@ export class AppController {
     this.logger.info({ processorDto });
     await this.pubSub.publish(WORKOUT_PROCESSOR_QUEUE, {
       json: processorDto,
+    });
+  }
+
+  @ApiOperation({
+    summary: 'Publish workouts to be processed asynchronous',
+  })
+  @Exceptions([API_KEY_NOT_FOUND, INVALID_API_KEY])
+  @ZRes(z.void(), HttpStatus.ACCEPTED)
+  @Post('workouts/batch')
+  async postWorkoutsBatch(@ZBody() body: WorkoutProcessorDto): Promise<void> {
+    await this.pubSub.publish(WORKOUT_PROCESSOR_QUEUE, {
+      json: body,
     });
   }
 }

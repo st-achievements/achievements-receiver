@@ -47,7 +47,7 @@ describe('AppController', () => {
     'should error when startTime is "%s"',
     async (value) => {
       await expect(() =>
-        controller.postIOSShortcut({ ...validInput, startTime: [value] }),
+        controller.postIOSShortcuts({ ...validInput, startTime: [value] }),
       ).rejects.toThrowException(
         INVALID_WORKOUT('Error: startTime: Invalid Date | Workout number: 0'),
       );
@@ -58,7 +58,7 @@ describe('AppController', () => {
     'should error when endTime is "%s"',
     async (value) => {
       await expect(() =>
-        controller.postIOSShortcut({ ...validInput, endTime: [value] }),
+        controller.postIOSShortcuts({ ...validInput, endTime: [value] }),
       ).rejects.toThrowException(
         INVALID_WORKOUT('Error: endTime: Invalid Date | Workout number: 0'),
       );
@@ -68,7 +68,7 @@ describe('AppController', () => {
   it.each([new Date().toISOString(), '2024-02-02T15:42:42-03:00'])(
     'should not throw error when startTime is "%s"',
     async (value) => {
-      await controller.postIOSShortcut({ ...validInput, startTime: [value] });
+      await controller.postIOSShortcuts({ ...validInput, startTime: [value] });
       expect(pubSubMock.publish).toHaveBeenCalledTimes(1);
     },
   );
@@ -76,8 +76,22 @@ describe('AppController', () => {
   it.each([new Date().toISOString(), '2024-02-02T15:42:42-03:00'])(
     'should not throw error when endTime is "%s"',
     async (value) => {
-      await controller.postIOSShortcut({ ...validInput, endTime: [value] });
+      await controller.postIOSShortcuts({ ...validInput, endTime: [value] });
       expect(pubSubMock.publish).toHaveBeenCalledTimes(1);
     },
   );
+
+  it('should call pub sub', async () => {
+    await controller.postIOSShortcuts({
+      id: ['69915BBA-8098-416E-B1D7-E5588155F510'],
+      endTime: ['2024-04-01T19:57:57-03:00'],
+      workoutActivityType: ['Traditional Strength Training'],
+      totalDistance: [],
+      duration: ['50,9'],
+      totalEnergyBurned: ['257 kcal'],
+      startTime: ['2024-04-01T19:07:01-03:00'],
+      username: 'stLmpp',
+    });
+    expect(pubSubMock.publish).toHaveBeenCalledTimes(1);
+  });
 });
