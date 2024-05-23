@@ -37,12 +37,9 @@ export const WorkoutInputSchema = z
     totalEnergyBurned: PropertySchema.openapi({
       example: '120 kcal\n302 kcal',
     }),
-    username: z.string().trim().min(1).max(255).openapi({
-      example: 'stLmpp',
-    }),
   })
   .openapi({
-    description: `All properties, except "username" can have multiple values. They must be separated by a line break (\\n).  
+    description: `All properties can have multiple values. They must be separated by a line break (\\n).  
 This is needed because of the format the iOS Shortcuts app sends the data.`,
   });
 

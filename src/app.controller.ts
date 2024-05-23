@@ -1,6 +1,6 @@
 import { Controller, HttpStatus, Post } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
-import { PubSubService } from '@st-achievements/core';
+import { getAuthContext, PubSubService } from '@st-achievements/core';
 import { Exceptions, formatZodErrorString, ZBody, ZRes } from '@st-api/core';
 import { Logger } from '@st-api/firebase';
 import { z } from 'zod';
@@ -37,10 +37,9 @@ export class AppController {
   ])
   @ZRes(z.void(), HttpStatus.ACCEPTED)
   @Post('ios-shortcuts')
-  async postIOSShortcuts(
-    @ZBody() { username, ...body }: WorkoutInputDto,
-  ): Promise<void> {
-    this.logger.log(`username: ${username}`);
+  async postIOSShortcuts(@ZBody() body: WorkoutInputDto): Promise<void> {
+    const { userId } = getAuthContext();
+    Logger.setContext(`u${userId}`);
     this.logger.log('body', { body });
     const length = Math.max(
       ...Object.values(body).map((value) => value.length),
@@ -52,7 +51,6 @@ export class AppController {
     }
 
     const processorDto: WorkoutProcessorDto = {
-      username,
       workouts: [],
     };
     for (let index = 0; index < length; index++) {
@@ -95,6 +93,8 @@ export class AppController {
   @ZRes(z.void(), HttpStatus.ACCEPTED)
   @Post('workouts/batch')
   async postWorkoutsBatch(@ZBody() body: WorkoutProcessorDto): Promise<void> {
+    Logger.setContext(`u${getAuthContext().userId}`);
+    this.logger.log('body', { body });
     await this.pubSubService.publish(WORKOUT_PROCESSOR_QUEUE, {
       json: body,
     });

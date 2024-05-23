@@ -19,7 +19,6 @@ describe('AppController', () => {
     workoutActivityType: ['Running'],
     duration: ['1'],
     endTime: ['2024-05-01T22:42:42-03:00'],
-    username: 'stLmpp',
     startTime: ['2024-05-01T22:42:42-03:00'],
     totalDistance: ['2 km'],
     totalEnergyBurned: ['3 kcal'],
@@ -90,7 +89,6 @@ describe('AppController', () => {
       duration: ['50,9'],
       totalEnergyBurned: ['257 kcal'],
       startTime: ['2024-04-01T19:07:01-03:00'],
-      username: 'stLmpp',
     });
     expect(pubSubMock.publish).toHaveBeenCalledTimes(1);
   });

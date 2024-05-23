@@ -54,9 +54,6 @@ export type WorkoutDto = z.infer<typeof WorkoutDto>;
 
 export class WorkoutProcessorDto extends zDto(
   z.object({
-    username: z.string().trim().min(1).max(255).openapi({
-      example: 'stLmpp',
-    }),
     workouts: WorkoutDto.array().max(MAX_WORKOUTS_PER_REQUEST),
   }),
 ) {}
