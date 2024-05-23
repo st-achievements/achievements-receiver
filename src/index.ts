@@ -1,4 +1,7 @@
-import { REDIS_CREDENTIALS } from '@st-achievements/core';
+import {
+  AchievementsCoreAdapter,
+  REDIS_CREDENTIALS,
+} from '@st-achievements/core';
 import { StFirebaseApp } from '@st-api/firebase';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat.js';
@@ -9,6 +12,7 @@ import { API_KEY_SECRET } from './secrets.js';
 dayjs.extend(customParseFormat);
 
 const app = StFirebaseApp.create(AppModule, {
+  adapter: new AchievementsCoreAdapter(),
   secrets: [API_KEY_SECRET, REDIS_CREDENTIALS],
   swagger: {
     documentBuilder: (document) =>

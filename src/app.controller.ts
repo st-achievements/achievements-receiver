@@ -1,7 +1,8 @@
 import { Controller, HttpStatus, Post } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
+import { PubSubService } from '@st-achievements/core';
 import { Exceptions, formatZodErrorString, ZBody, ZRes } from '@st-api/core';
-import { Logger, PubSub } from '@st-api/firebase';
+import { Logger } from '@st-api/firebase';
 import { z } from 'zod';
 
 import {
@@ -21,7 +22,7 @@ import { WorkoutDto, WorkoutProcessorDto } from './workout-processor.dto.js';
   version: '1',
 })
 export class AppController {
-  constructor(private readonly pubSub: PubSub) {}
+  constructor(private readonly pubSubService: PubSubService) {}
 
   private readonly logger = Logger.create(this);
 
@@ -82,19 +83,19 @@ export class AppController {
       processorDto.workouts.push(validationResult.data);
     }
     this.logger.info({ processorDto });
-    await this.pubSub.publish(WORKOUT_PROCESSOR_QUEUE, {
+    await this.pubSubService.publish(WORKOUT_PROCESSOR_QUEUE, {
       json: processorDto,
     });
   }
 
   @ApiOperation({
-    summary: 'Publish workouts to be processed asynchronous',
+    summary: 'Publish workouts to be processed asynchronously',
   })
   @Exceptions([API_KEY_NOT_FOUND, INVALID_API_KEY])
   @ZRes(z.void(), HttpStatus.ACCEPTED)
   @Post('workouts/batch')
   async postWorkoutsBatch(@ZBody() body: WorkoutProcessorDto): Promise<void> {
-    await this.pubSub.publish(WORKOUT_PROCESSOR_QUEUE, {
+    await this.pubSubService.publish(WORKOUT_PROCESSOR_QUEUE, {
       json: body,
     });
   }
