@@ -20,7 +20,7 @@
     "test:watch": "vitest -w"
   },
   "dependencies": {
-    "@anatine/zod-openapi": "~2.2.3",
+    "@anatine/zod-openapi": "2.2.3",
     "@google-cloud/functions-framework": "~3.4.0",
     "@nestjs/common": "~10.3.9",
     "@nestjs/config": "~3.2.2",
