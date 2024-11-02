@@ -1,4 +1,3 @@
-import { zDto } from '@st-api/core';
 import { z } from 'zod';
 
 const PropertySchema = z
@@ -11,7 +10,7 @@ const PropertySchema = z
       .filter(Boolean),
   );
 
-export const WorkoutInputSchema = z
+export const WorkoutInputDto = z
   .object({
     id: PropertySchema.openapi({
       example:
@@ -43,4 +42,4 @@ export const WorkoutInputSchema = z
 This is needed because of the format the iOS Shortcuts app sends the data.`,
   });
 
-export class WorkoutInputDto extends zDto(WorkoutInputSchema) {}
+export type WorkoutInputDto = z.output<typeof WorkoutInputDto>;

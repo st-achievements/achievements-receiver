@@ -1,4 +1,3 @@
-import { zDto } from '@st-api/core';
 import dayjs from 'dayjs';
 import { z } from 'zod';
 
@@ -52,8 +51,8 @@ export const WorkoutDto = z.object({
 
 export type WorkoutDto = z.infer<typeof WorkoutDto>;
 
-export class WorkoutProcessorDto extends zDto(
-  z.object({
-    workouts: WorkoutDto.array().max(MAX_WORKOUTS_PER_REQUEST),
-  }),
-) {}
+export const WorkoutProcessorDto = z.object({
+  workouts: WorkoutDto.array().max(MAX_WORKOUTS_PER_REQUEST),
+});
+
+export type WorkoutProcessorDto = z.output<typeof WorkoutProcessorDto>;

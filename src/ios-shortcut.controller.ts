@@ -1,7 +1,12 @@
-import { Controller, HttpStatus, Post } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
 import { getAuthContext, PubSubService } from '@st-achievements/core';
-import { Exceptions, formatZodErrorString, ZBody, ZRes } from '@st-api/core';
+import {
+  Controller,
+  Exceptions,
+  formatZodErrorString,
+  Handler,
+  ZBody,
+  ZRes,
+} from '@st-api/core';
 import { Logger } from '@st-api/firebase';
 import { z } from 'zod';
 
@@ -10,34 +15,28 @@ import {
   WORKOUT_PROCESSOR_QUEUE,
 } from './app.constants.js';
 import {
-  API_KEY_NOT_FOUND,
-  INVALID_API_KEY,
   INVALID_WORKOUT,
   NUMBER_OF_WORKOUTS_EXCEEDED_LIMIT,
 } from './exceptions.js';
 import { WorkoutInputDto } from './workout-input.dto.js';
 import { WorkoutDto, WorkoutProcessorDto } from './workout-processor.dto.js';
+import { StatusCodes } from 'http-status-codes';
 
 @Controller({
-  version: '1',
+  path: 'v1/ios-shortcuts',
+  method: 'POST',
+  openapi: {
+    summary: 'Handle workouts coming from iOS Shortcuts app',
+  },
 })
-export class AppController {
+@Exceptions([INVALID_WORKOUT, NUMBER_OF_WORKOUTS_EXCEEDED_LIMIT])
+@ZRes(z.void(), StatusCodes.ACCEPTED)
+export class IOSShortcutController implements Handler {
   constructor(private readonly pubSubService: PubSubService) {}
 
   private readonly logger = Logger.create(this);
 
-  @ApiOperation({
-    summary: 'Handle workouts coming from iOS Shortcuts app',
-  })
-  @Exceptions([
-    INVALID_WORKOUT,
-    API_KEY_NOT_FOUND,
-    INVALID_API_KEY,
-    NUMBER_OF_WORKOUTS_EXCEEDED_LIMIT,
-  ])
-  @ZRes(z.void(), HttpStatus.ACCEPTED)
-  @Post('ios-shortcuts')
-  async postIOSShortcuts(@ZBody() body: WorkoutInputDto): Promise<void> {
+  async handle(@ZBody(WorkoutInputDto) body: WorkoutInputDto): Promise<void> {
     const { userId } = getAuthContext();
     Logger.setContext(`u${userId}`);
     this.logger.log('body', { body });
@@ -83,20 +82,6 @@ export class AppController {
     this.logger.info({ processorDto });
     await this.pubSubService.publish(WORKOUT_PROCESSOR_QUEUE, {
       json: processorDto,
-    });
-  }
-
-  @ApiOperation({
-    summary: 'Publish workouts to be processed asynchronously',
-  })
-  @Exceptions([API_KEY_NOT_FOUND, INVALID_API_KEY])
-  @ZRes(z.void(), HttpStatus.ACCEPTED)
-  @Post('workouts/batch')
-  async postWorkoutsBatch(@ZBody() body: WorkoutProcessorDto): Promise<void> {
-    Logger.setContext(`u${getAuthContext().userId}`);
-    this.logger.log('body', { body });
-    await this.pubSubService.publish(WORKOUT_PROCESSOR_QUEUE, {
-      json: body,
     });
   }
 }

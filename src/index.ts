@@ -1,34 +1,44 @@
-import {
-  AchievementsCoreAdapter,
-  REDIS_CREDENTIALS,
-} from '@st-achievements/core';
+import { AchievementsCoreAdapter } from '@st-achievements/core';
 import { StFirebaseApp } from '@st-api/firebase';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat.js';
-
-import { AppModule } from './app.module.js';
 import { API_KEY_SECRET } from './secrets.js';
+import { IOSShortcutController } from './ios-shortcut.controller.js';
+import { GLOBAL_GUARDS } from '@st-api/core';
+import { ApiKeyGuard } from './api-key.guard.js';
+import { API_KEY_NOT_FOUND, INVALID_API_KEY } from './exceptions.js';
+import { WorkoutsBatchController } from './workouts-batch.controller.js';
 
 dayjs.extend(customParseFormat);
 
-const app = StFirebaseApp.create(AppModule, {
-  adapter: new AchievementsCoreAdapter(),
-  secrets: [API_KEY_SECRET, REDIS_CREDENTIALS],
-  swagger: {
-    documentBuilder: (document) =>
-      document.addApiKey({
-        name: 'x-api-key',
-        type: 'apiKey',
-        in: 'header',
-        scheme: 'api_key',
-      }),
-    documentFactory: (document) => {
-      document.security ??= [];
-      document.security.push({
-        api_key: [],
-      });
-      return document;
+const app = StFirebaseApp.create({
+  adapter: new AchievementsCoreAdapter({
+    throttling: true,
+    authentication: false,
+  }),
+  secrets: [API_KEY_SECRET],
+  controllers: [IOSShortcutController, WorkoutsBatchController],
+  providers: [
+    {
+      provide: GLOBAL_GUARDS,
+      useClass: ApiKeyGuard,
+      multi: true,
     },
+  ],
+  extraGlobalExceptions: [API_KEY_NOT_FOUND, INVALID_API_KEY],
+  swaggerDocumentBuilder: (document) => {
+    document.components ??= {};
+    document.components.securitySchemes ??= {};
+    document.components.securitySchemes.api_key = {
+      name: 'x-api-key',
+      type: 'apiKey',
+      in: 'header',
+    };
+    document.security ??= [];
+    document.security.push({
+      api_key: [],
+    });
+    return document;
   },
 }).withHttpHandler();
 

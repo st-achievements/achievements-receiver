@@ -13,9 +13,8 @@
         "pubsub-debug.log",
         ".secret.local"
       ],
-      "predeploy": [
-        "npm run build"
-      ]
+      "predeploy": ["npm run build"],
+      "runtime": "nodejs20"
     }
   ],
   "emulators": {
