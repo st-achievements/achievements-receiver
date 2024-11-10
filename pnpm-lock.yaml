@@ -13,13 +13,13 @@ importers:
         version: 3.4.2
       '@st-achievements/core':
         specifier: ~2.1.3
-        version: 2.1.3(skvx2zcdvtp56r77ngr6524ngi)
+        version: 2.1.3(r57c4gdvm3vuitmvymuedbuse4)
       '@st-api/core':
         specifier: ~6.0.5
         version: 6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8)
       '@st-api/firebase':
-        specifier: 6.1.5
-        version: 6.1.5(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8)
+        specifier: 6.1.6
+        version: 6.1.6(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8)
       '@st-api/zod-openapi':
         specifier: ^0.1.0
         version: 0.1.0(openapi3-ts@4.4.0)(zod@3.23.8)
@@ -1119,8 +1119,8 @@ packages:
       reflect-metadata: ~0.2.2
       zod: ^3.23.0
 
-  '@st-api/firebase@6.1.5':
-    resolution: {integrity: sha512-Oj6JgyoVgCm8QN+l7WhwYYbsl/Z6KnV1eqv2p1llpwAC0rqyMsHbQgF2hDVyV3t3DaQYKfTnzjSQCArlGRFI/A==}
+  '@st-api/firebase@6.1.6':
+    resolution: {integrity: sha512-UG2uPTfPgC9XpofaskSwzUIH/jDffmTuXWDkX1kpxMZdy60UN0vknBiJFTn/KkQE08SFaNjs0bnSuD5YlpeZcw==}
     engines: {node: '20', pnpm: ^9.0.0}
     peerDependencies:
       '@google-cloud/pubsub': ^4.8.0
@@ -4507,13 +4507,13 @@ snapshots:
       - '@types/node'
     optional: true
 
-  '@st-achievements/core@2.1.3(skvx2zcdvtp56r77ngr6524ngi)':
+  '@st-achievements/core@2.1.3(r57c4gdvm3vuitmvymuedbuse4)':
     dependencies:
       '@google-cloud/pubsub': 4.8.0
       '@hono/node-server': 1.13.5(hono@4.6.9)
-      '@st-achievements/database': 2.0.4(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@st-api/firebase@6.1.5(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(drizzle-orm@0.36.1(@opentelemetry/api@1.9.0)(pg@8.13.1))(firebase-functions@6.1.0(firebase-admin@12.7.0))(pg@8.13.1)
+      '@st-achievements/database': 2.0.4(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@st-api/firebase@6.1.6(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(drizzle-orm@0.36.1(@opentelemetry/api@1.9.0)(pg@8.13.1))(firebase-functions@6.1.0(firebase-admin@12.7.0))(pg@8.13.1)
       '@st-api/core': 6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8)
-      '@st-api/firebase': 6.1.5(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8)
+      '@st-api/firebase': 6.1.6(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8)
       '@stlmpp/di': 0.4.0(reflect-metadata@0.2.2)
       drizzle-orm: 0.36.1(@opentelemetry/api@1.9.0)(pg@8.13.1)
       firebase-functions: 6.1.0(firebase-admin@12.7.0)
@@ -4522,10 +4522,10 @@ snapshots:
       ioredis: 5.4.1
       zod: 3.23.8
 
-  '@st-achievements/database@2.0.4(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@st-api/firebase@6.1.5(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(drizzle-orm@0.36.1(@opentelemetry/api@1.9.0)(pg@8.13.1))(firebase-functions@6.1.0(firebase-admin@12.7.0))(pg@8.13.1)':
+  '@st-achievements/database@2.0.4(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@st-api/firebase@6.1.6(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(drizzle-orm@0.36.1(@opentelemetry/api@1.9.0)(pg@8.13.1))(firebase-functions@6.1.0(firebase-admin@12.7.0))(pg@8.13.1)':
     dependencies:
       '@st-api/core': 6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8)
-      '@st-api/firebase': 6.1.5(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8)
+      '@st-api/firebase': 6.1.6(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8)
       '@stlmpp/di': 0.4.0(reflect-metadata@0.2.2)
       camelcase: 8.0.0
       dotenv: 16.4.5
@@ -4556,7 +4556,7 @@ snapshots:
       type-fest: 4.26.1
       zod: 3.23.8
 
-  '@st-api/firebase@6.1.5(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8)':
+  '@st-api/firebase@6.1.6(@google-cloud/pubsub@4.8.0)(@st-api/core@6.0.5(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(reflect-metadata@0.2.2)(zod@3.23.8))(@stlmpp/di@0.4.0(reflect-metadata@0.2.2))(firebase-admin@12.7.0)(firebase-functions@6.1.0(firebase-admin@12.7.0))(firebase@11.0.1)(reflect-metadata@0.2.2)(zod@3.23.8)':
     dependencies:
       '@google-cloud/pubsub': 4.8.0
       '@hono/node-server': 1.13.5(hono@4.6.9)
