@@ -23,7 +23,7 @@
     "@google-cloud/functions-framework": "~3.4.2",
     "@st-achievements/core": "~2.1.4",
     "@st-api/core": "~6.0.6",
-    "@st-api/firebase": "6.1.13",
+    "@st-api/firebase": "6.1.14",
     "@st-api/zod-openapi": "^0.1.0",
     "@stlmpp/di": "~0.4.0",
     "dayjs": "~1.11.13",
