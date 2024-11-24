@@ -4,10 +4,7 @@ const PropertySchema = z
   .string()
   .max(10_000)
   .transform((text) =>
-    text
-      .split('\n')
-      .map((value) => value.trim())
-      .filter(Boolean),
+    text.split('\n').map((value) => value.trim() || undefined),
   );
 
 export const WorkoutInputDto = z
