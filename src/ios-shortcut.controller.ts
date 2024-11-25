@@ -48,7 +48,7 @@ export class IOSShortcutController implements Handler {
 
     this.logger.log(`length: ${workouts.length}`);
 
-    if (length > MAX_WORKOUTS_PER_REQUEST) {
+    if (workouts.length > MAX_WORKOUTS_PER_REQUEST) {
       throw NUMBER_OF_WORKOUTS_EXCEEDED_LIMIT();
     }
 
