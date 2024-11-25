@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat.js';
 import { IOSShortcutController } from './ios-shortcut.controller.js';
 import { WorkoutsBatchController } from './workouts-batch.controller.js';
+import { IOSShortcutRawController } from './ios-shortcut-raw.controller.js';
 
 dayjs.extend(customParseFormat);
 
@@ -12,7 +13,11 @@ const app = StFirebaseApp.create({
     throttling: true,
     authentication: 'ApiKey',
   }),
-  controllers: [IOSShortcutController, WorkoutsBatchController],
+  controllers: [
+    IOSShortcutController,
+    WorkoutsBatchController,
+    IOSShortcutRawController,
+  ],
 }).withHttpHandler();
 
 export const usr_workout = {
