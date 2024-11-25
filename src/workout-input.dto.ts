@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-const PropertySchema = z.string().max(10_000);
+const PropertySchema = z
+  .string()
+  .max(10_000)
+  .trim()
+  .transform((value) => value || undefined);
 
 export const WorkoutInputDto = z.object({
   workouts: z
@@ -21,7 +25,7 @@ export const WorkoutInputDto = z.object({
       }),
       totalDistance: PropertySchema.openapi({
         example: '3 km',
-      }),
+      }).optional(),
       workoutActivityType: PropertySchema.openapi({
         example: 'Running',
       }),
