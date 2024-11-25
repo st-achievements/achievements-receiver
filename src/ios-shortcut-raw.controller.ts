@@ -17,6 +17,7 @@ export class IOSShortcutRawController implements Handler {
     if (userId !== 4096) {
       throw FORBIDDEN();
     }
+    this.logger.debug('body', { body });
     const doc = this.firestore
       .collection('workouts-raw')
       .doc(`u${userId}-${new Date().toISOString()}`);
