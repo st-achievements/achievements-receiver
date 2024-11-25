@@ -33,6 +33,9 @@ export const WorkoutInputDto = z
     totalEnergyBurned: PropertySchema.openapi({
       example: '120 kcal\n302 kcal',
     }),
+    debug: z.boolean().optional().openapi({
+      description: 'Only used to debug',
+    }),
   })
   .openapi({
     description: `All properties can have multiple values. They must be separated by a line break (\\n).  

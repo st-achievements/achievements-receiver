@@ -7,7 +7,7 @@ import {
   ZBody,
   ZRes,
 } from '@st-api/core';
-import { Logger } from '@st-api/firebase';
+import { FirebaseAdminFirestore, Logger } from '@st-api/firebase';
 import { z } from 'zod';
 
 import {
@@ -32,12 +32,18 @@ import { StatusCodes } from 'http-status-codes';
 @Exceptions([INVALID_WORKOUT, NUMBER_OF_WORKOUTS_EXCEEDED_LIMIT])
 @ZRes(z.void(), StatusCodes.ACCEPTED)
 export class IOSShortcutController implements Handler {
-  constructor(private readonly pubSubService: PubSubService) {}
+  constructor(
+    private readonly pubSubService: PubSubService,
+    private readonly firestore: FirebaseAdminFirestore,
+  ) {}
 
   private readonly logger = Logger.create(this);
 
-  async handle(@ZBody(WorkoutInputDto) body: WorkoutInputDto): Promise<void> {
+  async handle(
+    @ZBody(WorkoutInputDto) { debug, ...body }: WorkoutInputDto,
+  ): Promise<void> {
     const { userId } = getAuthContext();
+    debug &&= userId === 4096;
     Logger.setContext(`u${userId}`);
     this.logger.log('body', { body });
     const length = Math.max(
@@ -80,8 +86,21 @@ export class IOSShortcutController implements Handler {
       processorDto.workouts.push(validationResult.data);
     }
     this.logger.info({ processorDto });
-    await this.pubSubService.publish(WORKOUT_PROCESSOR_QUEUE, {
-      json: processorDto,
-    });
+    if (debug) {
+      const doc = this.firestore
+        .collection('workouts')
+        .doc(
+          `u${userId}-${new Date().toISOString()}-${processorDto.workouts.length}`,
+        );
+      await doc.create({
+        ...processorDto,
+        userId,
+      });
+      this.logger.debug(`doc: ${doc.id}`);
+    } else {
+      await this.pubSubService.publish(WORKOUT_PROCESSOR_QUEUE, {
+        json: processorDto,
+      });
+    }
   }
 }
