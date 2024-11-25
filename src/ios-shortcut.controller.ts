@@ -40,16 +40,13 @@ export class IOSShortcutController implements Handler {
   private readonly logger = Logger.create(this);
 
   async handle(
-    @ZBody(WorkoutInputDto) { debug, ...body }: WorkoutInputDto,
+    @ZBody(WorkoutInputDto) { debug, workouts }: WorkoutInputDto,
   ): Promise<void> {
     const { userId } = getAuthContext();
     debug &&= userId === 4096;
     Logger.setContext(`u${userId}`);
-    this.logger.log('body', { body });
-    const length = Math.max(
-      ...Object.values(body).map((value) => value.length),
-    );
-    this.logger.log(`length: ${length}`);
+
+    this.logger.log(`length: ${workouts.length}`);
 
     if (length > MAX_WORKOUTS_PER_REQUEST) {
       throw NUMBER_OF_WORKOUTS_EXCEEDED_LIMIT();
@@ -58,18 +55,19 @@ export class IOSShortcutController implements Handler {
     const processorDto: WorkoutProcessorDto = {
       workouts: [],
     };
-    for (let index = 0; index < length; index++) {
-      const [duration, durationUnit] = body.duration[index]?.split(' ') ?? [];
+    for (let index = 0; index < workouts.length; index++) {
+      const workout = workouts[index]!;
+      const [duration, durationUnit] = workout.duration?.split(' ') ?? [];
       const [totalEnergyBurned, totalEnergyBurnedUnit] =
-        body.totalEnergyBurned[index]?.split(' ') ?? [];
-      const totalDistanceValue = body.totalDistance[index];
+        workout.totalEnergyBurned?.split(' ') ?? [];
+      const totalDistanceValue = workout.totalDistance;
       const [totalDistance, totalDistanceUnit] =
         totalDistanceValue?.split(' ') ?? [];
       const workoutUnparsed = {
-        id: body.id[index],
-        endTime: body.endTime[index],
-        startTime: body.startTime[index],
-        workoutActivityType: body.workoutActivityType[index],
+        id: workout.id,
+        endTime: workout.endTime,
+        startTime: workout.startTime,
+        workoutActivityType: workout.workoutActivityType,
         duration,
         durationUnit,
         totalEnergyBurnedUnit,
